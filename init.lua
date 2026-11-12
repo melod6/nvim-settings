@@ -42,13 +42,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.api.nvim_create_autocmd('BufWritePre', {
             buffer = args.buf,
             callback = function()
-                vim.lsp.buf.format({ bufnr = args.buf, id = client_id, timeout_ms = 2000 })
+                vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 2000 })
             end,
         })
     end
     if client and client.server_capabilities.inlayHintProvider then
       vim.lsp.inlay_hint.enable(true, { args.buf })
     end
+    vim.keymap.set('n', '<C-]>', vim.lsp.buf.definition, { desc = 'Go to definition (LSP)' })
   end,
 })
 
@@ -79,3 +80,8 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.cmd.colorscheme "catppuccin-nvim"
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  command = "resize 10",
+})
